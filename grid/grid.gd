@@ -16,7 +16,10 @@ func _process(delta):
 	emit_signal("world_update", delta)
 
 func update_queue():
-	queue = get_children()
+	queue = []
+	for node in get_children():
+		if node.type == CellType.ACTOR:
+			queue.push_back(node)
 	queue_next()
 
 func queue_next():
