@@ -19,10 +19,10 @@ __meta__ = {
 }
 
 [node name="Player" parent="Grid" instance=ExtResource( 3 )]
-position = Vector2( 129.221, 95.1751 )
+position = Vector2( 125.475, 95.5156 )
 
 [node name="BatItem" parent="Grid" instance=ExtResource( 4 )]
-position = Vector2( 246.062, 110.651 )
+position = Vector2( 238.57, 110.991 )
 
 [node name="Dude" parent="Grid" instance=ExtResource( 5 )]
 position = Vector2( 235.229, 263.086 )

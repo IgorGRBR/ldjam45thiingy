@@ -19,13 +19,12 @@ func move_to(target_position):
 	# and animate the sprite moving from the start to the target cell
 	var move_direction = (target_position - position).normalized()
 	$Tween.interpolate_property($Sprite, "position", - move_direction * 32, Vector2(), 0.3, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$Sprite.position -= position - move_direction * 32
 	position = target_position
-
 	$Tween.start()
-
-	# Stop the function execution until the animation finished
-	yield($Tween, "tween_completed")
 	
+	# Stop the function execution until the animation finished
+	yield($Tween, "tween_all_completed")
 	set_process(true)
 
 
