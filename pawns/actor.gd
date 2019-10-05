@@ -8,24 +8,24 @@ onready var self_sprite = $Sprite
 func _ready():
 	update_look_direction(Vector2(1, 0))
 	self.position = Grid.map_to_world(Grid.world_to_map(self.position)) + Grid.cell_size / 2
-	onReady()
+	on_ready()
 
-func onReady():
+func on_ready():
 	pass
 
-
-func _process(_delta):
+var ZERO_VECTOR = Vector2()
+func _world_update(_delta):
 	var input_direction = get_input_direction()
-	if not input_direction:
-		return
+	if not input_direction or input_direction == ZERO_VECTOR:
+		return false
 	update_look_direction(input_direction)
-
 	var target_position = Grid.request_move(self, input_direction)
 	if target_position:
 		#self_sprite.position = target_position - input_direction * 32
 		move_to(target_position)
 	else:
 		bump()
+	return true
 
 
 func get_input_direction():
@@ -42,6 +42,7 @@ func get_input_direction():
 	
 	previous_direction.x = abs(result.x)
 	previous_direction.y = abs(result.y)
+	print("yo")
 	
 	return result
 
@@ -74,3 +75,4 @@ func bump():
 	#$AnimationPlayer.play("bump")
 	#yield($AnimationPlayer, "animation_finished")
 	set_process(true)
+

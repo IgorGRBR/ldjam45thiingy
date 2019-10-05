@@ -1,4 +1,4 @@
 extends "res://pawns/object.gd"
 
-func onReady():
+func on_ready():
 	print("bruh")

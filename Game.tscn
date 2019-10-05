@@ -26,3 +26,9 @@ position = Vector2( 238.57, 110.991 )
 
 [node name="Dude" parent="Grid" instance=ExtResource( 5 )]
 position = Vector2( 235.229, 263.086 )
+
+[node name="Dude2" parent="Grid" instance=ExtResource( 5 )]
+position = Vector2( 158.809, 136.583 )
+
+[node name="Dude3" parent="Grid" instance=ExtResource( 5 )]
+position = Vector2( 75.2821, 116.508 )
