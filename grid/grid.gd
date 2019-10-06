@@ -5,10 +5,12 @@ signal world_update
 var activations = 0
 var current_node
 var queue = []
+var astar = AStar.new()
 
 func _ready():
 	for child in get_children():
 		set_cellv(world_to_map(child.position), child.type)
+	
 	activate()
 	update_queue()
 
@@ -81,3 +83,6 @@ func update_pawn_position(pawn, cell_start, cell_target):
 	set_cellv(cell_target, pawn.type)
 	set_cellv(cell_start, CellType.EMPTY)
 	return map_to_world(cell_target) + cell_size / 2
+
+func get_travel_path(a, b):
+	pass

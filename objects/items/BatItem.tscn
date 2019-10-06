@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://BatItem.gd" type="Script" id=1]
+[ext_resource path="res://objects/items/BatItem.gd" type="Script" id=1]
 [ext_resource path="res://sprites/bat.png" type="Texture" id=2]
 
 [node name="BatItem" type="Node2D"]
