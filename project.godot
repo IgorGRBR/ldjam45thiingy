@@ -17,6 +17,7 @@ _global_script_class_icons={
 
 config/name="ldjam45game"
 run/main_scene="res://Gaaame.tscn"
+; run/main_scene="res://Menu.tscn"
 config/icon="res://icon.png"
 
 [display]
