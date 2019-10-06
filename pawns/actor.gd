@@ -15,6 +15,7 @@ func on_ready():
 
 var ZERO_VECTOR = Vector2()
 func _world_update(_delta):
+	on_world_update(_delta)
 	var input_direction = get_input_direction()
 	if not input_direction or input_direction == ZERO_VECTOR:
 		return false
@@ -43,7 +44,7 @@ func get_input_direction():
 	
 	previous_direction.x = abs(result.x)
 	previous_direction.y = abs(result.y)
-	print("yo")
+	#print("yo")
 	
 	return result
 

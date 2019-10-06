@@ -1,13 +1,26 @@
 extends "res://pawns/actor.gd"
+var player
+
+func on_world_update(delta):
+	print("checking for player")
+	if not player:
+		player = Grid.find_by_tag("player")
+		print("looking for player")
+		if player:
+			print("player found")
 
 func get_input_direction():
-	var horizontal = randi()%3-1
-	var vertical = randi()%3-1
-	
-	var result = Vector2(
-		int(horizontal),
-		int(vertical)
-	)
+	var result = Vector2()
+	if not player:
+		var horizontal = randi()%3-1
+		var vertical = randi()%3-1
+		
+		result = Vector2(
+			int(horizontal),
+			int(vertical)
+		)
+	else:
+		result = Grid.get_travel_direction(position, player.position)
 	if previous_direction.x == 0 and previous_direction.y != 0:
 		result.x = 0
 	elif previous_direction.x != 0 and previous_direction.y == 0:

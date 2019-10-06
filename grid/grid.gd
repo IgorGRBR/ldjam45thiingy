@@ -13,6 +13,7 @@ func _ready():
 	
 	activate()
 	update_queue()
+	generate_navmesh()
 
 func _process(delta):
 	emit_signal("world_update", delta)
@@ -51,6 +52,12 @@ func deactivate():
 	if activations == 0:
 		disconnect("world_update", self, "world_update")
 
+func find_by_tag(tag):
+	for node in get_children():
+		if node.tag == tag:
+			return node
+	return null
+
 func connect_signals():
 	for node in get_children():
 		node.connect("world_update", node, "_bruh")
@@ -60,7 +67,7 @@ func request_move(pawn, direction):
 	var cell_target = cell_start + direction
 	
 	var cell_target_type = get_cellv(cell_target)
-	print(cell_target_type)
+	#print(cell_target_type)
 	match cell_target_type:
 		CellType.EMPTY:
 			return update_pawn_position(pawn, cell_start, cell_target)
@@ -84,5 +91,61 @@ func update_pawn_position(pawn, cell_start, cell_target):
 	set_cellv(cell_start, CellType.EMPTY)
 	return map_to_world(cell_target) + cell_size / 2
 
+func debug_rectangle(pos):
+	var rect = ColorRect.new()
+	rect.rect_position = Vector2(pos.x - 8, pos.y - 8)
+	rect.rect_size = Vector2(16, 16)
+	rect.color = Color(255, 0, 0)
+	add_child(rect)
+
+func debug_line(pos, h):
+	var rect = ColorRect.new()
+	rect.rect_position = Vector2(pos.x - 2 - 6 * int(h), pos.y - 2 - 6 * int(not h))
+	rect.rect_size = Vector2(4 + 12 * int(h), 4 + 12 * int(not h))
+	rect.color = Color(0, 0, 255)
+	add_child(rect)
+
+func generate_navmesh():
+	astar.clear()
+	var rect = get_used_rect()
+	#print(rect.position.x, rect.position.y, rect.size.x, rect.size.y)
+	var id = 0
+	for i in range(rect.position.x, rect.size.x - 1):
+		for j in range(rect.position.y, rect.size.y - 1):
+			var cell_target_type = get_cellv(Vector2(i, j))
+			if cell_target_type != CellType.OBSTACLE:
+				astar.add_point(id, Vector3(i, j, 0))
+				#debug_rectangle(Vector2(i * 32, j * 32) + cell_size/2)
+				if i > 0:
+					var p = astar.get_closest_point(Vector3(i-1, j, 0))
+					if p:
+						var pos = astar.get_point_position(p)
+						var c = get_cellv(Vector2(i-1, j))
+						if pos == Vector3(i-1, j, 0) and c != CellType.OBSTACLE:
+							astar.connect_points(id, p, true)
+							#debug_line(Vector2(i * 32, j * 32 + cell_size.y/2), true)
+				if j > 0:
+					var p = astar.get_closest_point(Vector3(i, j-1, 0))
+					if p:
+						var pos = astar.get_point_position(p)
+						var c = get_cellv(Vector2(i, j-1))
+						if pos == Vector3(i, j-1, 0) and c != CellType.OBSTACLE:
+							astar.connect_points(id, p, true)
+							#debug_line(Vector2(i * 32 + cell_size.x/2, j * 32), false)
+			id += 1
+
 func get_travel_path(a, b):
-	pass
+	var pa = world_to_map(a)
+	var pb = world_to_map(b)
+	
+	var ppa = astar.get_closest_point(Vector3(pa.x, pa.y, 0))
+	var ppb = astar.get_closest_point(Vector3(pb.x, pb.y, 0))
+	
+	return astar.get_point_path(ppa, ppb)
+
+func get_travel_direction(a, b):
+	var path = get_travel_path(a, b)
+	if path.size() > 1:
+		var final = path[1] - path[0]
+		return Vector2(final.x, final.y)
+	return Vector2()
