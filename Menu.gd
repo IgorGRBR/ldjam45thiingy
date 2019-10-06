@@ -13,6 +13,7 @@ func _physics_proccess(delta):
 		$MarginContainer/VBoxContainer/HBoxContainer2/LoadGame.grab_focus()
 
 func _on_NewGame_pressed():
-	get_tree().change_scene("Game.tscn")
+	get_tree().change_scene("Gaaame.tscn")
+
 func _on_Exit_pressed():
 	get_tree().quit()
